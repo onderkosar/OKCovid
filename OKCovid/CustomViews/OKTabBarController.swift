@@ -21,7 +21,7 @@ class OKTabBarController: UITabBarController {
     func createTotalStatsNC() -> UINavigationController {
         let totalStatsVC                = TotalStatsVC()
         
-        totalStatsVC.title              = "Total Stats"
+        totalStatsVC.title              = "All-Time Total"
         totalStatsVC.tabBarItem         = UITabBarItem(title: "Total", image: SFSymbols.person, tag: 0)
         
         return UINavigationController(rootViewController: totalStatsVC)

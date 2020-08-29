@@ -11,28 +11,47 @@ import UIKit
 class TotalStatsVC: UIViewController {
     
     let headerView = UIView()
+    var countriesCollectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureCollectionView()
         configureUI()
         downloadData(countryName: nil)
+//        downloadData(countryName: countryNames[0]["code"])
     }
     
     
+    func configureCollectionView() {
+        countriesCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.allCountriesFlowLayout())
+        countriesCollectionView.register(AllTimeCell.self, forCellWithReuseIdentifier: AllTimeCell.reuseID)
+        
+        countriesCollectionView.backgroundColor     = .clear
+        countriesCollectionView.isPagingEnabled     = true
+        
+        countriesCollectionView.delegate            = self
+        countriesCollectionView.dataSource          = self
+    }
+    
     private func configureUI() {
-        view.addSubviews(headerView)
+        view.addSubviews(headerView, countriesCollectionView)
         view.backgroundColor = .systemBackground
         
         let height = (view.frame.height / 5) - 5
+        let width  = view.frame.width - 40
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            headerView.heightAnchor.constraint(equalToConstant: height)
+            headerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            headerView.widthAnchor.constraint(equalToConstant: width),
+            headerView.heightAnchor.constraint(equalToConstant: height),
+            
+            countriesCollectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 50),
+            countriesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countriesCollectionView.widthAnchor.constraint(equalToConstant: view.frame.width - 50),
+            countriesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
     
     func downloadData(countryName: String?) {
             NetworkManager.shared.downloadData(forCountry: countryName) { [weak self] result in
@@ -66,5 +85,27 @@ class TotalStatsVC: UIViewController {
         containerView.addSubview(childVC.view)
         childVC.view.frame = containerView.bounds
         childVC.didMove(toParent: self)
+    }
+}
+
+extension TotalStatsVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: countriesCollectionView.frame.width, height: countriesCollectionView.frame.height)
+    }
+}
+
+extension TotalStatsVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return countryNames.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
+        
+        cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
+        cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
+        
+        return cell
     }
 }

@@ -48,11 +48,27 @@ class AllTimeCell: UICollectionViewCell {
         deathsNumLbl.text           = "Deaths Nums"
     }
     
-    func set(data: CountryData) {
-        casesNumLbl.text            = "\(data.cases)"
-        recoveredNumLbl.text        = "\(data.recovered)"
-        activeNumLbl.text           = "\(data.cases - data.recovered)"
-        deathsNumLbl.text           = "\(data.deaths)"
+    func set(data: CountryData) {        
+        if data.cases == 0 {
+            casesNumLbl.text        = "N/A"
+        } else {
+            casesNumLbl.text        = "\(data.cases.numberFormat())"
+        }
+        
+        if data.recovered == 0 {
+            recoveredNumLbl.text    = "N/A"
+            activeNumLbl.text       = "N/A"
+        } else {
+            recoveredNumLbl.text    = "\(data.recovered.numberFormat())"
+            activeNumLbl.text       = "\((data.cases - data.recovered).numberFormat())"
+        }
+        
+        if data.deaths == 0 {
+            deathsNumLbl.text       = "N/A"
+        } else {
+            deathsNumLbl.text       = "\(data.deaths.numberFormat())"
+        }
+        
     }
     
     private func configureCollectionView() {

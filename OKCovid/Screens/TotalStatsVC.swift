@@ -12,15 +12,63 @@ class TotalStatsVC: UIViewController {
     
     let headerView = UIView()
     var countriesCollectionView: UICollectionView!
+    
+    enum Section { case main }
+
+    var dataSource: UICollectionViewDiffableDataSource<Section, CountryData>!
+    
+    
+    var countryData: [CountryData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureUI()
         downloadData(countryName: nil)
+        
+        getCountries(countryName: countryNames[3]["code"]!)
+        configureDataSource()
 //        downloadData(countryName: countryNames[0]["code"])
     }
     
+    func getCountries(countryName: String) {
+        NetworkManager.shared.downloadData(forCountry: countryName) { [weak self] result in
+            guard let self = self else { return }
+            //            self.dismissLoadingView()
+            
+            switch result {
+            case.success(let countryData):
+                self.updateUI(with: countryData)
+            case.failure(let error):
+                print(error)
+            }
+        }
+        
+    }
+    
+    func updateUI(with countryData: CountryData) {
+        self.countryData.append(countryData)
+        self.updateData(on: self.countryData)
+    }
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, CountryData>(collectionView: countriesCollectionView, cellProvider: { (collectionView, indexPath, countryData) -> UICollectionViewCell? in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
+            cell.countryNameLabel.text  = countryNames[3]["name"]
+            cell.countryFlag.image      = UIImage(named: countryNames[3]["code"]!)
+            cell.set(data: countryData)
+            return cell
+        })
+    }
+    
+    func updateData(on countryData: [CountryData]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, CountryData>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(countryData)
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
+    }
     
     func configureCollectionView() {
         countriesCollectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.allCountriesFlowLayout())
@@ -30,7 +78,7 @@ class TotalStatsVC: UIViewController {
         countriesCollectionView.isPagingEnabled     = true
         
         countriesCollectionView.delegate            = self
-        countriesCollectionView.dataSource          = self
+//        countriesCollectionView.dataSource          = self
     }
     
     private func configureUI() {
@@ -94,18 +142,8 @@ extension TotalStatsVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TotalStatsVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
+extension TotalStatsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return countryNames.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
-        
-        cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
-        cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
-        
-        return cell
+        return 2
     }
 }

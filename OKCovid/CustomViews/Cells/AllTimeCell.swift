@@ -41,11 +41,6 @@ class AllTimeCell: UICollectionViewCell {
         recoveredTitleLbl.text      = "Recovered"
         activeTitleLbl.text         = "Active Cases"
         deathsTitleLbl.text         = "Deaths"
-        
-        casesNumLbl.text            = "Cases Nums"
-        recoveredNumLbl.text        = "Recovered Nums"
-        activeNumLbl.text           = "Acive Nums"
-        deathsNumLbl.text           = "Deaths Nums"
     }
     
     func set(data: CountryData) {        
@@ -68,7 +63,6 @@ class AllTimeCell: UICollectionViewCell {
         } else {
             deathsNumLbl.text       = "\(data.deaths.numberFormat())"
         }
-        
     }
     
     private func configureCollectionView() {
@@ -77,7 +71,7 @@ class AllTimeCell: UICollectionViewCell {
         backgroundColor = .secondarySystemBackground
 
         NSLayoutConstraint.activate([
-            countryFlag.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
+            countryFlag.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 30),
             countryFlag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             countryFlag.widthAnchor.constraint(equalToConstant: 150),
             countryFlag.heightAnchor.constraint(equalToConstant: 150),
@@ -87,7 +81,7 @@ class AllTimeCell: UICollectionViewCell {
             countryNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             countryNameLabel.heightAnchor.constraint(equalToConstant: 22),
             
-            casesTitleLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 20),
+            casesTitleLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
             casesTitleLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             casesTitleLbl.widthAnchor.constraint(equalToConstant: 190),
             casesTitleLbl.heightAnchor.constraint(equalToConstant: 22),
@@ -107,7 +101,7 @@ class AllTimeCell: UICollectionViewCell {
             deathsTitleLbl.widthAnchor.constraint(equalToConstant: 190),
             deathsTitleLbl.heightAnchor.constraint(equalToConstant: 22),
             
-            casesNumLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 20),
+            casesNumLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
             casesNumLbl.leadingAnchor.constraint(equalTo: casesTitleLbl.trailingAnchor, constant: 10),
             casesNumLbl.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             casesNumLbl.heightAnchor.constraint(equalToConstant: 22),

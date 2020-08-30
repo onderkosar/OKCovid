@@ -15,6 +15,7 @@ class TotalStatsVC: UIViewController {
     var countriesCollectionView: UICollectionView!
     let headerView = UIView()
     
+    var worldWideCases = Double()
     var countryData: [CountryData] = []
     
     override func viewDidLoad() {
@@ -76,6 +77,7 @@ class TotalStatsVC: UIViewController {
             switch result {
             case .success(let statistic):
                 self.configureUIElements(with: statistic)
+                self.worldWideCases = Double(statistic.cases)
             case .failure(let error):
                 print(error)
             }
@@ -125,7 +127,7 @@ class TotalStatsVC: UIViewController {
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, CountryData>(collectionView: countriesCollectionView, cellProvider: { (collectionView, indexPath, countryData) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
-            
+            cell.worldWideCases         = self.worldWideCases
             cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
             cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
             

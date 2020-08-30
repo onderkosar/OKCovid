@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9503943524F6A64200E9859C /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503943424F6A64200E9859C /* UIView+Ext.swift */; };
-		9503943724F6ACF300E9859C /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503943624F6ACF300E9859C /* String+Ext.swift */; };
 		9538CE0D24FA7E37007170DF /* TotalStatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9538CE0C24FA7E37007170DF /* TotalStatsVC.swift */; };
 		9538CE1024FA7F70007170DF /* TotalStatsHeaderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9538CE0F24FA7F70007170DF /* TotalStatsHeaderVC.swift */; };
 		9538CE1324FA7F9C007170DF /* OKTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9538CE1224FA7F9C007170DF /* OKTitleLabel.swift */; };
@@ -23,11 +22,12 @@
 		95DC37D124F180210098ABD9 /* OKError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DC37D024F180210098ABD9 /* OKError.swift */; };
 		95DC37D324F180890098ABD9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DC37D224F180890098ABD9 /* NetworkManager.swift */; };
 		95DC37D524F1812B0098ABD9 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DC37D424F1812B0098ABD9 /* CountryData.swift */; };
+		95E76FAF24FC260A00784C57 /* OKSecondaryTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E76FAE24FC260A00784C57 /* OKSecondaryTitleLabel.swift */; };
+		95E76FB124FC2B6100784C57 /* DataTypes+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E76FB024FC2B6100784C57 /* DataTypes+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9503943424F6A64200E9859C /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
-		9503943624F6ACF300E9859C /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		9538CE0C24FA7E37007170DF /* TotalStatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalStatsVC.swift; sourceTree = "<group>"; };
 		9538CE0F24FA7F70007170DF /* TotalStatsHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalStatsHeaderVC.swift; sourceTree = "<group>"; };
 		9538CE1224FA7F9C007170DF /* OKTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKTitleLabel.swift; sourceTree = "<group>"; };
@@ -44,6 +44,8 @@
 		95DC37D024F180210098ABD9 /* OKError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKError.swift; sourceTree = "<group>"; };
 		95DC37D224F180890098ABD9 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		95DC37D424F1812B0098ABD9 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
+		95E76FAE24FC260A00784C57 /* OKSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKSecondaryTitleLabel.swift; sourceTree = "<group>"; };
+		95E76FB024FC2B6100784C57 /* DataTypes+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataTypes+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				9538CE1224FA7F9C007170DF /* OKTitleLabel.swift */,
+				95E76FAE24FC260A00784C57 /* OKSecondaryTitleLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -161,7 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				9503943424F6A64200E9859C /* UIView+Ext.swift */,
-				9503943624F6ACF300E9859C /* String+Ext.swift */,
+				95E76FB024FC2B6100784C57 /* DataTypes+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -256,9 +259,10 @@
 				9538CE1324FA7F9C007170DF /* OKTitleLabel.swift in Sources */,
 				9556E3C224FAD7F6008DD35B /* AllTimeCell.swift in Sources */,
 				95DC37D124F180210098ABD9 /* OKError.swift in Sources */,
+				95E76FB124FC2B6100784C57 /* DataTypes+Ext.swift in Sources */,
 				9538CE0D24FA7E37007170DF /* TotalStatsVC.swift in Sources */,
 				95DC37CF24F17AF80098ABD9 /* Constants.swift in Sources */,
-				9503943724F6ACF300E9859C /* String+Ext.swift in Sources */,
+				95E76FAF24FC260A00784C57 /* OKSecondaryTitleLabel.swift in Sources */,
 				9538CE1024FA7F70007170DF /* TotalStatsHeaderVC.swift in Sources */,
 				9556E3C624FB05BE008DD35B /* UIHelper.swift in Sources */,
 			);

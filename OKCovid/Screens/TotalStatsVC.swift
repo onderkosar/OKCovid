@@ -13,10 +13,10 @@ class TotalStatsVC: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, CountryData>!
     
     var countriesCollectionView: UICollectionView!
-    let headerView = UIView()
+    let headerView                  = UIView()
+    var worldWideCases              = Double()
     
-    var worldWideCases = Double()
-    var countryData: [CountryData] = []
+    var countryData: [CountryData]  = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,5 +140,16 @@ extension TotalStatsVC: UICollectionViewDelegateFlowLayout {
 extension TotalStatsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return countryData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let country         = countryNames[indexPath.row]["code"]!
+        let destVC          = DailyStatsVC()
+        
+        destVC.title        = countryNames[indexPath.row]["name"]! + " Daily Stats"
+        destVC.downloadTimelineData(for: country)
+
+        let navController   = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true, completion: nil)
     }
 }

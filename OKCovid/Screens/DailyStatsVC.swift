@@ -13,56 +13,59 @@ class DailyStatsVC: UIViewController {
     var dataSource: UITableViewDiffableDataSource<Section, DailyModel>!
     
     let dailyStatsTableView         = UITableView()
-    var dailyStats: [DailyModel]     = []
+    var dailyStats: [DailyModel]    = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViewController()
-        configureTableView()
+        view.backgroundColor = .systemBackground
         
-        downloadTimelineData(for: "tr")
+        configureTableView()
+        configureUI()
         configureDataSource()
     }
     
     
-    func configureViewController() {
-        view.backgroundColor    = .systemBackground
-        title                   = "Daily Stats"
+    private func configureTableView() {
+        dailyStatsTableView.frame         = view.bounds
+        dailyStatsTableView.rowHeight     = 40
+        dailyStatsTableView.delegate      = self
     }
     
-    func configureTableView() {
+    private func configureUI() {
         view.addSubview(dailyStatsTableView)
-        
-        dailyStatsTableView.frame         = view.bounds
-        dailyStatsTableView.rowHeight     = 80
-        dailyStatsTableView.delegate      = self
+        dailyStatsTableView.translatesAutoresizingMaskIntoConstraints = false
         
         dailyStatsTableView.register(DailyCell.self, forCellReuseIdentifier: DailyCell.reuseID)
+        NSLayoutConstraint.activate([
+            dailyStatsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            dailyStatsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            dailyStatsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
+            dailyStatsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
     }
     
-    
-    private func downloadTimelineData(for country: String) {
+    func downloadTimelineData(for country: String) {
         
         NetworkManager.shared.fetch(for: country, ifDaily: true) { [weak self] (result: CoronaCountryDataTimeline) in
-            guard let self = self else { return }
+            guard let self      = self else { return }
             
-            let casesDict = self.convertTimelineData(timeline: result.timeline.cases)
-            let deathsDict = self.convertTimelineData(timeline: result.timeline.deaths)
-            let timelineData = TimelineData(country: result.country, casesTimeline: casesDict, deathsTimeline: deathsDict)
+            let casesDict       = self.convertTimelineData(timeline: result.timeline.cases)
+            let deathsDict      = self.convertTimelineData(timeline: result.timeline.deaths)
+            let timelineData    = TimelineData(country: result.country, casesTimeline: casesDict, deathsTimeline: deathsDict)
             
             self.updateUI(with: timelineData)
         }
     }
     
     func convertTimelineData(timeline: [String: Int]) -> Array<(key: Date, value: Int)> {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yy"
+        let dateFormatter           = DateFormatter()
+        dateFormatter.dateFormat    = "MM/dd/yy"
         
-        var dateDictionary = [Date: Int]()
+        var dateDictionary          = [Date: Int]()
         
         for (key, value) in timeline {
-            let date = dateFormatter.date(from: key)
-            dateDictionary[date!] = value
+            let date                = dateFormatter.date(from: key)
+            dateDictionary[date!]   = value
         }
         let sortedList = dateDictionary.sorted { $0.0 < $1.0 }
         

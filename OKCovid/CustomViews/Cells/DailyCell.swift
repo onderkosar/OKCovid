@@ -11,14 +11,20 @@ import UIKit
 class DailyCell: UITableViewCell {
     static let reuseID      = "dailyCell"
     
-    let casesTitleLbl       = OKTitleLabel(textAlignment: .left, fontSize: 20)
+    let stackView           = UIStackView()
+    let casesStack          = UIStackView()
+    let deathsStack         = UIStackView()
+    
+    let dateLbl             = OKTitleLabel(textAlignment: .left, fontSize: 20)
+    let casesTitleLbl       = OKTitleLabel(textAlignment: .left, fontSize: 17)
+    let casesStatsLbl       = OKSecondaryTitleLabel(fontSize: 17)
+    let deathsTitleLbl      = OKTitleLabel(textAlignment: .left, fontSize: 17)
+    let deathsStatsLbl      = OKSecondaryTitleLabel(fontSize: 17)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor     = .systemBackground
-        accessoryType       = .disclosureIndicator
-        
-        configure()
+        configureCell()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -27,17 +33,40 @@ class DailyCell: UITableViewCell {
     
     
     func set(countryData: DailyModel) {
-        configure()
-        casesTitleLbl.text = "\(countryData.dDate.convertToMonthYearFormat()): " + "" + "\(countryData.dDeaths)"
+        configureUI()
+        
+        dateLbl.text        = "\(countryData.dDate.convertToMonthYearFormat())"
+        casesTitleLbl.text  = "cases: "
+        casesStatsLbl.text  = "\(countryData.dCases)"
+        deathsTitleLbl.text = "deaths: "
+        deathsStatsLbl.text = "\(countryData.dDeaths)"
     }
     
-    private func configure() {
-        addSubviews(casesTitleLbl)
+    private func configureCell() {
+        backgroundColor     = .systemBackground
+        accessoryType       = .none
+        selectionStyle      = .none
+    }
+    
+    private func configureUI() {
+        addSubviews(dateLbl, stackView)
+        
+        stackView.HStack(casesStack, deathsStack, spacing: 30, distribution: .equalSpacing)
+        
+        casesStack.HStack(casesTitleLbl, casesStatsLbl, spacing: 2, distribution: .fillEqually)
+        deathsStack.HStack(deathsTitleLbl, deathsStatsLbl, spacing: 2, distribution: .fillEqually)
+        
         NSLayoutConstraint.activate([
-            casesTitleLbl.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            casesTitleLbl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            casesTitleLbl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            casesTitleLbl.heightAnchor.constraint(equalToConstant: 22),
+            dateLbl.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            dateLbl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            dateLbl.widthAnchor.constraint(equalToConstant: 60),
+            dateLbl.heightAnchor.constraint(equalToConstant: 22),
+            
+            stackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo: dateLbl.trailingAnchor, constant: 60),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            stackView.heightAnchor.constraint(equalToConstant: 22),
         ])
+        
     }
 }

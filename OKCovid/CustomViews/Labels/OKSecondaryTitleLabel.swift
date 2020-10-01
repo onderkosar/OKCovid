@@ -28,6 +28,7 @@ class OKSecondaryTitleLabel: UILabel {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
+        textAlignment               = .right
         adjustsFontSizeToFitWidth   = true
         textColor                   = .secondaryLabel
         minimumScaleFactor          = 0.8

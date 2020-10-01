@@ -8,13 +8,12 @@
 
 import UIKit
 
-
 class DailyStatsVC: UIViewController {
     enum Section { case main }
-    var dataSource: UITableViewDiffableDataSource<Section, Int>!
+    var dataSource: UITableViewDiffableDataSource<Section, DailyModel>!
     
-    let dailyStatsTableView = UITableView()
-    var casesData: [Int]    = []
+    let dailyStatsTableView         = UITableView()
+    var dailyStats: [DailyModel]     = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,17 +69,16 @@ class DailyStatsVC: UIViewController {
         return sortedList
     }
     
-    func updateUI(with countryData: TimelineData) {
-        
-        for i in 1...countryData.casesTimeline.count - 1 {
-            self.casesData.append(countryData.casesTimeline[i].value)
+    func updateUI(with timelineData: TimelineData) {
+        for i in 1...timelineData.casesTimeline.count - 1 {
+            self.dailyStats.append(.init(dDate: timelineData.casesTimeline[i].key, dCases: timelineData.casesTimeline[i].value - timelineData.casesTimeline[i-1].value, dDeaths: timelineData.deathsTimeline[i].value - timelineData.deathsTimeline[i-1].value))
         }
         
-        updateData(on: self.casesData)
+        updateData(on: self.dailyStats)
     }
     
-    func updateData(on countryData: [Int]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
+    func updateData(on countryData: [DailyModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, DailyModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(countryData)
         
@@ -90,10 +88,10 @@ class DailyStatsVC: UIViewController {
     }
     
     func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource<Section, Int>(tableView: dailyStatsTableView, cellProvider: { (tableView, indexPath, countryData) -> UITableViewCell? in
+        dataSource = UITableViewDiffableDataSource<Section, DailyModel>(tableView: dailyStatsTableView, cellProvider: { (tableView, indexPath, countryData) -> UITableViewCell? in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: DailyCell.reuseID, for: indexPath) as! DailyCell
-            cell.set(countryData: self.casesData[indexPath.row])
+            cell.set(countryData: self.dailyStats[indexPath.row])
             
             return cell
         })
@@ -104,7 +102,7 @@ class DailyStatsVC: UIViewController {
 extension DailyStatsVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return casesData.count
+        return dailyStats.count
     }
     
 }

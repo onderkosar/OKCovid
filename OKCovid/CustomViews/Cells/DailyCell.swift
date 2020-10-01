@@ -26,9 +26,9 @@ class DailyCell: UITableViewCell {
     }
     
     
-    func set(countryData: Int) {
+    func set(countryData: DailyModel) {
         configure()
-        casesTitleLbl.text = "\(countryData)"
+        casesTitleLbl.text = "\(countryData.dDate.convertToMonthYearFormat()): " + "" + "\(countryData.dDeaths)"
     }
     
     private func configure() {

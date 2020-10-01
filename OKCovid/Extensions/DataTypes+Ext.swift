@@ -26,3 +26,34 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+extension Date {
+    
+    func convertToMonthYearFormat() -> String {
+        let dateFormatter           = DateFormatter()
+        dateFormatter.dateFormat    = "MMM d"
+        
+        return dateFormatter.string(from: self)
+    }
+}
+
+extension String {
+    func convertToDate() -> Date? {
+        let dateFormatter           = DateFormatter()
+        dateFormatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.locale        = Locale(identifier: "en_US_POSIX")
+        
+        return dateFormatter.date(from: self)!
+    }
+    
+    func convertToDisplayFormat() -> String {
+        guard let date = self.convertToDate() else { return "N/A" }
+        return date.convertToMonthYearFormat()
+    }
+    
+    func replaceSpace(with: String) -> String {
+        let strWithoutSpace = self.replacingOccurrences(of: " ", with: "\(with)")
+        
+        return strWithoutSpace
+    }
+}

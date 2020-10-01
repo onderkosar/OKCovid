@@ -14,3 +14,21 @@ struct CountryData: Codable, Hashable {
     let deaths: Int
     let recovered: Int
 }
+
+struct CoronaCountryDataTimeline: Codable, Hashable {
+    let country: String
+    let timeline: Timeline
+}
+
+
+struct Timeline: Codable, Hashable {
+    let cases: [String: Int]
+    let deaths: [String: Int]
+}
+
+
+struct TimelineData {
+    var country: String
+    var casesTimeline: Array<(key: Date, value: Int)>
+    var deathsTimeline: Array<(key: Date, value: Int)>
+}

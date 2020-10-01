@@ -72,15 +72,11 @@ class TotalStatsVC: UIViewController {
     
     
     func getGlobalData(countryName: String?) {
-        NetworkManager.shared.downloadData(forCountry: countryName) { [weak self] result in
+        NetworkManager.shared.fetch(for: countryName, ifDaily: false) { [weak self] (result: CountryData) in
             guard let self = self else { return }
-            switch result {
-            case .success(let statistic):
-                self.configureUIElements(with: statistic)
-                self.worldWideCases = Double(statistic.cases)
-            case .failure(let error):
-                print(error)
-            }
+            
+            self.configureUIElements(with: result)
+            self.worldWideCases = Double(result.cases)
         }
     }
     
@@ -99,14 +95,10 @@ class TotalStatsVC: UIViewController {
     
     
     func getCountriesData(countryName: String) {
-        NetworkManager.shared.downloadData(forCountry: countryName) { [weak self] result in
+        NetworkManager.shared.fetch(for: countryName, ifDaily: false) { [weak self] (result: CountryData) in
             guard let self = self else { return }
-            switch result {
-            case.success(let countryData):
-                self.updateUI(with: countryData)
-            case.failure(let error):
-                print(error)
-            }
+            
+            self.updateUI(with: result)
         }
     }
     

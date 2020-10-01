@@ -14,48 +14,43 @@ class NetworkManager {
     
     private init() {}
     
-    func downloadData(forCountry country: String?, completion: @escaping (Result<CountryData, OKError>) -> ()) {
+    func fetch<Model: Decodable>(for country: String?, ifDaily: Bool, completed: @escaping (Model) -> ()) {
+        
         var endpoint: String
+        var status: String
+        
+        if ifDaily {
+            status = "historical"
+        } else {
+            status = "countries"
+        }
         
         if let country = country {
-            endpoint = baseURL + "countries/\(country)"
+            endpoint = baseURL + "\(status)/\(country.replaceSpace(with: "-"))"
         }
         else {
             endpoint = baseURL + "all"
         }
-
-        guard let url = URL(string: endpoint) else {
-            completion(.failure(.invalidURL))
-            return
-        }
         
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        guard let url = URL(string: endpoint) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
-            if let error = error {
-                print(error)
-                completion(.failure(.unableToComplete))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completion(.failure(.invalidResponse))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(.invalidData))
-                return
-            }
+            if let _ = error { return }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let data = data else { return }
             
             do {
-                let covidData = try JSONDecoder().decode(CountryData.self, from: data)
-                completion(.success(covidData))
-            }
-            catch {
-                print(error)
-                completion(.failure(.invalidData))
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                
+                let obj  = try decoder.decode(Model.self, from: data)
+                completed(obj)
+            }  catch let err {
+                print(err)
             }
         }
+        
         task.resume()
     }
 }

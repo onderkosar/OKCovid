@@ -14,11 +14,13 @@ class AllTimeCell: UICollectionViewCell {
     let countryFlag         = UIImageView()
     let countryNameLabel    = OKTitleLabel(textAlignment: .center, fontSize: 20)
     
+    let titleStack          = UIStackView()
     let casesTitleLbl       = OKTitleLabel(textAlignment: .left, fontSize: 20)
     let recoveredTitleLbl   = OKTitleLabel(textAlignment: .left, fontSize: 20)
     let activeTitleLbl      = OKTitleLabel(textAlignment: .left, fontSize: 20)
     let deathsTitleLbl      = OKTitleLabel(textAlignment: .left, fontSize: 20)
     
+    let numStack            = UIStackView()
     let casesNumLbl         = OKTitleLabel(textAlignment: .right, fontSize: 20)
     let recoveredNumLbl     = OKTitleLabel(textAlignment: .right, fontSize: 20)
     let activeNumLbl        = OKTitleLabel(textAlignment: .right, fontSize: 20)
@@ -29,6 +31,8 @@ class AllTimeCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .secondarySystemBackground
+        
         configureElements()
         configureCollectionView()
     }
@@ -72,9 +76,9 @@ class AllTimeCell: UICollectionViewCell {
     }
     
     private func configureCollectionView() {
-        
-        addSubviews(countryFlag, countryNameLabel, casesTitleLbl, recoveredTitleLbl, activeTitleLbl, deathsTitleLbl, casesNumLbl, recoveredNumLbl, activeNumLbl, deathsNumLbl, percentageLbl)
-        backgroundColor = .secondarySystemBackground
+        addSubviews(countryFlag, countryNameLabel, titleStack, numStack, percentageLbl)
+        titleStack.VStack(casesTitleLbl, recoveredTitleLbl, activeTitleLbl, deathsTitleLbl, spacing: 5, distribution: .fillEqually)
+        numStack.VStack(casesNumLbl, recoveredNumLbl, activeNumLbl, deathsNumLbl, spacing: 5, distribution: .fillEqually)
 
         NSLayoutConstraint.activate([
             countryFlag.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 30),
@@ -87,45 +91,16 @@ class AllTimeCell: UICollectionViewCell {
             countryNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
             countryNameLabel.heightAnchor.constraint(equalToConstant: 22),
             
-            casesTitleLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
-            casesTitleLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            casesTitleLbl.widthAnchor.constraint(equalToConstant: 140),
-            casesTitleLbl.heightAnchor.constraint(equalToConstant: 22),
             
-            recoveredTitleLbl.topAnchor.constraint(equalTo: casesTitleLbl.bottomAnchor, constant: 5),
-            recoveredTitleLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            recoveredTitleLbl.widthAnchor.constraint(equalToConstant: 140),
-            recoveredTitleLbl.heightAnchor.constraint(equalToConstant: 22),
+            titleStack.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
+            titleStack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            titleStack.widthAnchor.constraint(equalToConstant: 140),
+            titleStack.heightAnchor.constraint(equalToConstant: 90),
             
-            activeTitleLbl.topAnchor.constraint(equalTo: recoveredTitleLbl.bottomAnchor, constant: 5),
-            activeTitleLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            activeTitleLbl.widthAnchor.constraint(equalToConstant: 140),
-            activeTitleLbl.heightAnchor.constraint(equalToConstant: 22),
-            
-            deathsTitleLbl.topAnchor.constraint(equalTo: activeTitleLbl.bottomAnchor, constant: 5),
-            deathsTitleLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            deathsTitleLbl.widthAnchor.constraint(equalToConstant: 140),
-            deathsTitleLbl.heightAnchor.constraint(equalToConstant: 22),
-            
-            casesNumLbl.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
-            casesNumLbl.leadingAnchor.constraint(equalTo: casesTitleLbl.trailingAnchor, constant: 10),
-            casesNumLbl.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            casesNumLbl.heightAnchor.constraint(equalToConstant: 22),
-            
-            recoveredNumLbl.topAnchor.constraint(equalTo: casesNumLbl.bottomAnchor, constant: 5),
-            recoveredNumLbl.leadingAnchor.constraint(equalTo: recoveredTitleLbl.trailingAnchor, constant: 10),
-            recoveredNumLbl.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            recoveredNumLbl.heightAnchor.constraint(equalToConstant: 22),
-            
-            activeNumLbl.topAnchor.constraint(equalTo: recoveredNumLbl.bottomAnchor, constant: 5),
-            activeNumLbl.leadingAnchor.constraint(equalTo: activeTitleLbl.trailingAnchor, constant: 10),
-            activeNumLbl.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            activeNumLbl.heightAnchor.constraint(equalToConstant: 22),
-            
-            deathsNumLbl.topAnchor.constraint(equalTo: activeNumLbl.bottomAnchor, constant: 5),
-            deathsNumLbl.leadingAnchor.constraint(equalTo: deathsTitleLbl.trailingAnchor, constant: 10),
-            deathsNumLbl.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            deathsNumLbl.heightAnchor.constraint(equalToConstant: 22),
+            numStack.topAnchor.constraint(equalTo: countryNameLabel.bottomAnchor, constant: 30),
+            numStack.leadingAnchor.constraint(equalTo: titleStack.trailingAnchor, constant: 10),
+            numStack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            numStack.heightAnchor.constraint(equalToConstant: 90),
             
             percentageLbl.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             percentageLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),

@@ -12,6 +12,11 @@ class DailyStatsVC: UIViewController {
     enum Section { case main }
     var dataSource: UITableViewDiffableDataSource<Section, DailyModel>!
     
+    let titleStack                  = UIStackView()
+    let dateTitleLbl                = OKTitleLabel(textAlignment: .left, fontSize: 22)
+    let casesTitleLbl               = OKTitleLabel(textAlignment: .right, fontSize: 22)
+    let deathsTitleLbl              = OKTitleLabel(textAlignment: .right, fontSize: 22)
+    
     let dailyStatsTableView         = UITableView()
     var dailyStats: [DailyModel]    = []
 
@@ -19,33 +24,44 @@ class DailyStatsVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        configureTableView()
+        configureElements()
         configureUI()
         configureDataSource()
     }
     
     
-    private func configureTableView() {
-        dailyStatsTableView.frame         = view.bounds
-        dailyStatsTableView.rowHeight     = 40
-        dailyStatsTableView.delegate      = self
+    private func configureElements() {
+        titleStack.backgroundColor      = .systemBackground
+        
+        dateTitleLbl.text               = "Date"
+        casesTitleLbl.text              = "Cases"
+        deathsTitleLbl.text             = "Deaths"
+        
+        dailyStatsTableView.frame       = view.bounds
+        dailyStatsTableView.rowHeight   = 40
+        dailyStatsTableView.delegate    = self
     }
     
     private func configureUI() {
-        view.addSubview(dailyStatsTableView)
-        dailyStatsTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubviews(titleStack, dailyStatsTableView)
+        
+        titleStack.HStack(dateTitleLbl, casesTitleLbl, deathsTitleLbl, spacing: 40, distribution: .fillEqually)
         
         dailyStatsTableView.register(DailyCell.self, forCellReuseIdentifier: DailyCell.reuseID)
         NSLayoutConstraint.activate([
-            dailyStatsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            dailyStatsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
-            dailyStatsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
+            titleStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            titleStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            titleStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            titleStack.heightAnchor.constraint(equalToConstant: 40),
+            
+            dailyStatsTableView.topAnchor.constraint(equalTo: titleStack.bottomAnchor),
+            dailyStatsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            dailyStatsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             dailyStatsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
     
     func downloadTimelineData(for country: String) {
-        
         NetworkManager.shared.fetch(for: country, ifDaily: true) { [weak self] (result: CoronaCountryDataTimeline) in
             guard let self      = self else { return }
             
@@ -76,6 +92,14 @@ class DailyStatsVC: UIViewController {
         for i in 1...timelineData.casesTimeline.count - 1 {
             self.dailyStats.append(.init(dDate: timelineData.casesTimeline[i].key, dCases: timelineData.casesTimeline[i].value - timelineData.casesTimeline[i-1].value, dDeaths: timelineData.deathsTimeline[i].value - timelineData.deathsTimeline[i-1].value))
         }
+        
+        var reversedNames   = [DailyModel]()
+
+        for name in dailyStats {
+            reversedNames.insert(name, at: 0)
+        }
+        
+        self.dailyStats     = reversedNames
         
         updateData(on: self.dailyStats)
     }

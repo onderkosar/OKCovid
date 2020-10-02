@@ -20,6 +20,8 @@ class TotalStatsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        
         configureCollectionView()
         configureUI()
         getData()
@@ -32,19 +34,15 @@ class TotalStatsVC: UIViewController {
         countriesCollectionView.register(AllTimeCell.self, forCellWithReuseIdentifier: AllTimeCell.reuseID)
         
         countriesCollectionView.backgroundColor     = .clear
-        
         countriesCollectionView.layer.cornerRadius  = 16
         countriesCollectionView.layer.borderWidth   = 2
         countriesCollectionView.layer.borderColor   = UIColor.white.cgColor
-        
         countriesCollectionView.isPagingEnabled     = true
-        
         countriesCollectionView.delegate            = self
     }
     
     private func configureUI() {
         view.addSubviews(headerView, countriesCollectionView)
-        view.backgroundColor = .systemBackground
         
         let height = (view.frame.height / 5) - 5
         let width  = view.frame.width - 40
@@ -57,8 +55,8 @@ class TotalStatsVC: UIViewController {
             
             countriesCollectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 50),
             countriesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            countriesCollectionView.widthAnchor.constraint(equalToConstant: view.frame.width - 50),
-            countriesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            countriesCollectionView.widthAnchor.constraint(equalToConstant: width),
+            countriesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
     

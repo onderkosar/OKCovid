@@ -41,7 +41,7 @@ extension UIView {
     }
     
     @discardableResult
-    open func VStack(_ views: [UIView], spacing: CGFloat = 0, alignment: UIStackView.Alignment = .fill, distribution: UIStackView.Distribution = .fill) -> UIStackView {
+    open func VStack(_ views: UIView..., spacing: CGFloat = 0, alignment: UIStackView.Alignment = .fill, distribution: UIStackView.Distribution = .fill) -> UIStackView {
         return Stack(.vertical, views: views, spacing: spacing, alignment: alignment, distribution: distribution)
     }
     

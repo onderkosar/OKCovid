@@ -32,8 +32,8 @@ class DailyCell: UITableViewCell {
     
     func set(countryData: DailyModel) {
         dateLbl.text        = "\(countryData.dDate.convertToMonthYearFormat())"
-        casesStatsLbl.text  = "\(countryData.dCases)"
-        deathsStatsLbl.text = "\(countryData.dDeaths)"
+        casesStatsLbl.text  = "\(countryData.dCases.numberFormat())"
+        deathsStatsLbl.text = "\(countryData.dDeaths.numberFormat())"
     }
     
     private func configureCell() {

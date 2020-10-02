@@ -40,6 +40,7 @@ class DailyStatsVC: UIViewController {
         dailyStatsTableView.frame       = view.bounds
         dailyStatsTableView.rowHeight   = 40
         dailyStatsTableView.delegate    = self
+        dailyStatsTableView.showsVerticalScrollIndicator = false
     }
     
     private func configureUI() {

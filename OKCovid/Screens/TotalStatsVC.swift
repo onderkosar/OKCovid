@@ -44,33 +44,33 @@ class TotalStatsVC: UIViewController {
     private func configureUI() {
         view.addSubviews(headerView, countriesCollectionView)
         
-        let height = (view.frame.height / 5) - 5
-        let width  = view.frame.width - 40
+        let headerViewHeight    = view.frame.height / 4
+        let width               = view.frame.width - 40
         
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             headerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             headerView.widthAnchor.constraint(equalToConstant: width),
-            headerView.heightAnchor.constraint(equalToConstant: height),
+            headerView.heightAnchor.constraint(equalToConstant: headerViewHeight),
             
-            countriesCollectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 50),
+            countriesCollectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: headerViewHeight / 3),
             countriesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countriesCollectionView.widthAnchor.constraint(equalToConstant: width),
-            countriesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            countriesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
     
     func getData() {
-        getGlobalData(countryName: nil)
+        getGlobalData()
         
-        for i in 0...10 {
+        for i in 0...countryNames.count - 1 {
             getCountriesData(countryName: countryNames[i]["code"]!)
         }
     }
     
     
-    func getGlobalData(countryName: String?) {
-        NetworkManager.shared.fetch(for: countryName, ifDaily: false) { [weak self] (result: CountryData) in
+    func getGlobalData() {
+        NetworkManager.shared.fetch(for: nil, ifDaily: false) { [weak self] (result: CountryData) in
             guard let self = self else { return }
             
             self.configureUIElements(with: result)
@@ -109,19 +109,22 @@ class TotalStatsVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, CountryData>()
         snapshot.appendSections([.main])
         snapshot.appendItems(countryData)
-        DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-        }
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
     
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, CountryData>(collectionView: countriesCollectionView, cellProvider: { (collectionView, indexPath, countryData) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
+            let cellHeight: CGFloat     = cell.contentView.frame.height
+            
             cell.worldWideCases         = self.worldWideCases
-            cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
+            
             cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
             
-            cell.set(data: self.countryData[indexPath.row])
+            cell.countryNameLabel       = OKTitleLabel(textAlignment: .center, fontSize: cellHeight / 15)
+            cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
+            
+            cell.configureElements(countryData: countryData)
             
             return cell
         })

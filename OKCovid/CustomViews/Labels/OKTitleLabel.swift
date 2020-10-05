@@ -20,7 +20,6 @@ class OKTitleLabel: UILabel {
     
     convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
         self.init(frame: .zero)
-        configure()
         
         self.textAlignment  = textAlignment
         self.font           = UIFont.systemFont(ofSize: fontSize, weight: .bold)

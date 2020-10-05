@@ -12,7 +12,7 @@ class AllTimeCell: UICollectionViewCell {
     static let reuseID      = "allTimeCell"
     
     let countryFlag         = UIImageView()
-    var countryNameLabel    = OKTitleLabel()
+    var countryNameLabel    = OKTitleLabel(textAlignment: .center, fontSize: 1)
     
     var statsStackView      = StatsStackView()
     
@@ -33,11 +33,10 @@ class AllTimeCell: UICollectionViewCell {
     }
     
     func configureElements(countryData: CountryData) {
-        statsStackView                  = StatsStackView(countryData: countryData)
+        statsStackView.configureElements(countryData: countryData)
         
         percentageLbl.textAlignment     = .right
         percentageLbl.text              = "\(((Double(countryData.cases) * 100) / worldWideCases).rounded(by: 1))" + "% of the global cases"
-
     }
     
     private func configureCollectionView() {

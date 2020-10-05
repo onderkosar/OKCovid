@@ -40,9 +40,7 @@ class StatsStackView: UIStackView {
         numStack.VStack(casesNumLbl, recoveredNumLbl, activeNumLbl, deathsNumLbl, spacing: 1, distribution: .fillEqually)
     }
     
-    convenience init(countryData: CountryData) {
-        self.init(frame: .zero)
-        
+    func configureElements(countryData: CountryData) {
         self.casesTitleLbl.text          = "Cases"
         self.recoveredTitleLbl.text      = "Recovered"
         self.activeTitleLbl.text         = "Active Cases"

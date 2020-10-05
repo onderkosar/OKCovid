@@ -80,7 +80,7 @@ class TotalStatsVC: UIViewController {
     
     func configureUIElements(with countryData: CountryData) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
-            self.add(childVC: TotalStatsHeaderVC(countryData: countryData), to: self.headerView)
+            self.add(childVC: GlobalStatsHeaderVC(countryData: countryData), to: self.headerView)
         }
     }
     
@@ -118,10 +118,8 @@ class TotalStatsVC: UIViewController {
             let cellHeight: CGFloat     = cell.contentView.frame.height
             
             cell.worldWideCases         = self.worldWideCases
-            
             cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
-            
-            cell.countryNameLabel       = OKTitleLabel(textAlignment: .center, fontSize: cellHeight / 15)
+            cell.countryNameLabel.font  = UIFont.systemFont(ofSize: cellHeight / 15, weight: .bold)
             cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
             
             cell.configureElements(countryData: countryData)

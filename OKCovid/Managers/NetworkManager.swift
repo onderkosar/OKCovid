@@ -18,15 +18,17 @@ class NetworkManager {
         
         var endpoint: String
         var status: String
+        var duration    = ""
         
         if ifDaily {
-            status = "historical"
+            status      = "historical"
+            duration    = "?lastdays=365"
         } else {
-            status = "countries"
+            status      = "countries"
         }
         
         if let country = country {
-            endpoint = baseURL + "\(status)/\(country.replaceSpace(with: "-"))"
+            endpoint = baseURL + status + "/\(country.replaceSpace(with: "-"))" + duration
         }
         else {
             endpoint = baseURL + "all"

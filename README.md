@@ -2,7 +2,7 @@
 
 #### COVID-19 statistics app, built to practice some Swift skills.
 
-![OKCovid Poster 001](https://user-images.githubusercontent.com/36846931/94932961-70614c00-04d2-11eb-8139-ee9911cfb553.png)
+![OKCovid Poster 002](https://user-images.githubusercontent.com/36846931/95264528-2791f600-0838-11eb-888f-6034852e1628.png)
 
 Users can view either global or individual country total stats on main screen, also daily changes by a single tap on any country.
 

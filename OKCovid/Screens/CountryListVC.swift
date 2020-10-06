@@ -20,7 +20,8 @@ class CountryListVC: UIViewController {
     let casesLbl            = OKTitleLabel(textAlignment: .right, fontSize: 20)
     let deathsLbl           = OKTitleLabel(textAlignment: .right, fontSize: 20)
     
-    var countryData: [CountryData]  = []
+    var countryData: [CountryData]          = []
+    var filteredCountries: [CountryData]    = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +77,9 @@ class CountryListVC: UIViewController {
     
     func updateUI(with countryData: [CountryData]) {
         self.countryData.append(contentsOf: countryData)
+        DispatchQueue.main.async {
+            self.configureSearchController()
+        }
         updateData(on: self.countryData)
     }
     
@@ -99,6 +103,15 @@ class CountryListVC: UIViewController {
         })
     }
     
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater       = self
+        searchController.searchBar.placeholder      = "Type to search for a country"
+        navigationItem.searchController             = searchController
+        navigationItem.hidesSearchBarWhenScrolling  = false
+        searchController.searchBar.delegate = self
+    }
+    
 }
 
 extension CountryListVC: UITableViewDelegate {
@@ -107,4 +120,20 @@ extension CountryListVC: UITableViewDelegate {
         return countryData.count
     }
     
+}
+
+extension CountryListVC: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        filteredCountries = countryData.filter { $0.country!.lowercased().contains(filter.lowercased()) }
+        updateData(on: filteredCountries)
+    }
+}
+
+extension CountryListVC: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+      if  searchText.count == 0 {
+        updateData(on: countryData)
+      }
+    }
 }

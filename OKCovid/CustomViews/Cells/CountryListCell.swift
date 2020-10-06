@@ -32,8 +32,6 @@ class CountryListCell: UITableViewCell {
     
     func configureElements(countryData: CountryData) {
         countryLbl.textAlignment    = .left
-        countryLbl.textColor        = .black
-        
         countryLbl.text             = countryData.country
         casesStatsLbl.text          = "\(countryData.cases.numberFormat())"
         deathsStatsLbl.text         = "\(countryData.deaths.numberFormat())"

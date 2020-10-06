@@ -119,7 +119,7 @@ class DailyStatsVC: UIViewController {
         dataSource = UITableViewDiffableDataSource<Section, DailyModel>(tableView: dailyStatsTableView, cellProvider: { (tableView, indexPath, countryData) -> UITableViewCell? in
             
             let cell = tableView.dequeueReusableCell(withIdentifier: DailyCell.reuseID, for: indexPath) as! DailyCell
-            cell.set(countryData: self.dailyStats[indexPath.row])
+            cell.configureElements(countryData: self.dailyStats[indexPath.row])
             
             return cell
         })

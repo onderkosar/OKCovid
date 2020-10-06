@@ -24,4 +24,5 @@ let countryNames = [["code": "usa", "name": "United States of America"],
 enum SFSymbols {
     static let global   = UIImage(systemName: "globe")
     static let person   = UIImage(systemName: "person.3")
+    static let allList  = UIImage(systemName: "list.bullet.indent")
 }

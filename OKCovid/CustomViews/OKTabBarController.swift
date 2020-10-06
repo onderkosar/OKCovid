@@ -15,7 +15,7 @@ class OKTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UITabBar.appearance().tintColor = .systemOrange
-        viewControllers                 = [createTotalStatsNC()]
+        viewControllers                 = [createTotalStatsNC(), createSearchNC()]
     }
     
     func createTotalStatsNC() -> UINavigationController {
@@ -25,5 +25,14 @@ class OKTabBarController: UITabBarController {
         totalStatsVC.tabBarItem         = UITabBarItem(title: "Total", image: SFSymbols.person, tag: 0)
         
         return UINavigationController(rootViewController: totalStatsVC)
+    }
+    
+    func createSearchNC() -> UINavigationController {
+        let searchVC = CountryListVC()
+        
+        searchVC.title = "Countries Stats"
+        searchVC.tabBarItem = UITabBarItem(title: "List", image: SFSymbols.allList, tag: 1)
+        
+        return UINavigationController(rootViewController: searchVC)
     }
 }

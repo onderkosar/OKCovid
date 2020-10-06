@@ -105,11 +105,15 @@ class CountryListVC: UIViewController {
     
     func configureSearchController() {
         let searchController = UISearchController()
-        searchController.searchResultsUpdater       = self
-        searchController.searchBar.placeholder      = "Type to search for a country"
-        navigationItem.searchController             = searchController
-        navigationItem.hidesSearchBarWhenScrolling  = false
-        searchController.searchBar.delegate = self
+        
+        searchController.searchResultsUpdater           = self
+        
+        searchController.searchBar.delegate             = self
+        searchController.searchBar.placeholder          = "Type to search for a country"
+        searchController.searchBar.showsCancelButton    = false
+        
+        navigationItem.searchController                 = searchController
+        navigationItem.hidesSearchBarWhenScrolling      = false
     }
     
 }
@@ -132,8 +136,8 @@ extension CountryListVC: UISearchResultsUpdating {
 
 extension CountryListVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-      if  searchText.count == 0 {
-        updateData(on: countryData)
-      }
+        if  searchText.count == 0 {
+            updateData(on: countryData)
+        }
     }
 }

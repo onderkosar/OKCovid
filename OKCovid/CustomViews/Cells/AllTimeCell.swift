@@ -19,9 +19,12 @@ class AllTimeCell: UICollectionViewCell {
     var worldWideCases      = Double()
     let percentageLbl       = OKSecondaryTitleLabel(fontSize: 15)
     
+    var cellHeight: CGFloat!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .secondarySystemBackground
+        cellHeight      = contentView.frame.height
         
         DispatchQueue.main.async {
             self.configureCollectionView()
@@ -33,10 +36,15 @@ class AllTimeCell: UICollectionViewCell {
     }
     
     func configureElements(countryData: CountryData) {
-        statsStackView.configureElements(countryData: countryData)
+        countryFlag.image               = UIImage(named: (countryData.country?.lowercased())!)
+        
+        countryNameLabel.font           = UIFont.systemFont(ofSize: cellHeight / 15, weight: .bold)
+        countryNameLabel.text           = countryData.country
         
         percentageLbl.textAlignment     = .right
         percentageLbl.text              = "\(((Double(countryData.cases) * 100) / worldWideCases).rounded(by: 1))" + "% of the global cases"
+        
+        statsStackView.configureElements(countryData: countryData)
     }
     
     private func configureCollectionView() {
@@ -44,13 +52,13 @@ class AllTimeCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             countryFlag.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
             countryFlag.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            countryFlag.widthAnchor.constraint(equalToConstant: contentView.frame.height / 3),
-            countryFlag.heightAnchor.constraint(equalToConstant: contentView.frame.height / 3),
+            countryFlag.widthAnchor.constraint(equalToConstant: cellHeight / 3),
+            countryFlag.heightAnchor.constraint(equalToConstant: cellHeight / 3),
             
             countryNameLabel.topAnchor.constraint(equalTo: countryFlag.bottomAnchor, constant: 10),
             countryNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             countryNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-            countryNameLabel.heightAnchor.constraint(equalToConstant: (contentView.frame.height / 15) + 1),
+            countryNameLabel.heightAnchor.constraint(equalToConstant: (cellHeight / 15) + 1),
             
             percentageLbl.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             percentageLbl.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),

@@ -63,8 +63,8 @@ class TotalStatsVC: UIViewController {
     func getData() {
         getGlobalData()
         
-        for i in 0...countryNames.count - 1 {
-            getCountriesData(countryName: countryNames[i]["code"]!)
+        for i in 0...countryCodes.count - 1 {
+            getCountriesData(countryName: countryCodes[i])
         }
     }
     
@@ -77,20 +77,6 @@ class TotalStatsVC: UIViewController {
             self.worldWideCases = Double(result.cases)
         }
     }
-    
-    func configureUIElements(with countryData: CountryData) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
-            self.add(childVC: GlobalStatsHeaderVC(countryData: countryData), to: self.headerView)
-        }
-    }
-    
-    func add(childVC: UIViewController, to containerView: UIView) {
-        addChild(childVC)
-        containerView.addSubview(childVC.view)
-        childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self)
-    }
-    
     
     func getCountriesData(countryName: String) {
         NetworkManager.shared.fetch(for: countryName, ifDaily: false) { [weak self] (result: CountryData) in
@@ -115,17 +101,25 @@ class TotalStatsVC: UIViewController {
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, CountryData>(collectionView: countriesCollectionView, cellProvider: { (collectionView, indexPath, countryData) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AllTimeCell.reuseID, for: indexPath) as! AllTimeCell
-            let cellHeight: CGFloat     = cell.contentView.frame.height
             
-            cell.worldWideCases         = self.worldWideCases
-            cell.countryFlag.image      = UIImage(named: countryNames[indexPath.row]["code"]!)
-            cell.countryNameLabel.font  = UIFont.systemFont(ofSize: cellHeight / 15, weight: .bold)
-            cell.countryNameLabel.text  = countryNames[indexPath.row]["name"]
-            
+            cell.worldWideCases = self.worldWideCases
             cell.configureElements(countryData: countryData)
             
             return cell
         })
+    }
+    
+    func configureUIElements(with countryData: CountryData) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+            self.add(childVC: GlobalStatsHeaderVC(countryData: countryData), to: self.headerView)
+        }
+    }
+    
+    func add(childVC: UIViewController, to containerView: UIView) {
+        addChild(childVC)
+        containerView.addSubview(childVC.view)
+        childVC.view.frame = containerView.bounds
+        childVC.didMove(toParent: self)
     }
 }
 
@@ -138,15 +132,15 @@ extension TotalStatsVC: UICollectionViewDelegateFlowLayout {
 
 extension TotalStatsVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return countryData.count
+        return countryCodes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let country         = countryNames[indexPath.row]["code"]!
+        let countryCode     = countryCodes[indexPath.row]
         let destVC          = DailyStatsVC()
         
-        destVC.title        = countryNames[indexPath.row]["name"]! + " Daily Stats"
-        destVC.downloadTimelineData(for: country)
+        destVC.title        = countryData[indexPath.row].country! + " Daily Stats"
+        destVC.downloadTimelineData(for: countryCode)
 
         let navController   = UINavigationController(rootViewController: destVC)
         present(navController, animated: true, completion: nil)

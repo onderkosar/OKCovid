@@ -8,18 +8,7 @@
 
 import UIKit
 
-let countryNames = [["code": "usa", "name": "United States of America"],
-                    ["code": "uk",  "name": "United Kingdom"],
-                    ["code": "ita",  "name": "Italy"],
-                    ["code": "fr",  "name": "France"],
-                    ["code": "esp",  "name": "Spain"],
-                    ["code": "deu",  "name": "Germany"],
-                    ["code": "tr",  "name": "Turkey"],
-                    ["code": "bel",  "name": "Belgium"],
-                    ["code": "can",  "name": "Canada"],
-                    ["code": "au",  "name": "Australia"],
-                    ["code": "bra",  "name": "Brazil"],
-]
+let countryCodes = ["usa", "uk", "ita", "fr", "esp", "deu", "tr", "bel", "can", "au", "bra"]
 
 enum SFSymbols {
     static let global   = UIImage(systemName: "globe")

@@ -26,6 +26,7 @@ class CountryListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        configureSearchController()
         configureElements()
         configureUI()
         getData()
@@ -77,9 +78,6 @@ class CountryListVC: UIViewController {
     
     func updateUI(with countryData: [CountryData]) {
         self.countryData.append(contentsOf: countryData)
-        DispatchQueue.main.async {
-            self.configureSearchController()
-        }
         updateData(on: self.countryData)
     }
     

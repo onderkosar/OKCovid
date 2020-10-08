@@ -136,11 +136,11 @@ extension TotalStatsVC: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let countryCode     = countryCodes[indexPath.row]
+        let countryCode     = countryData[indexPath.row].country?.lowercased()
         let destVC          = DailyStatsVC()
         
         destVC.title        = countryData[indexPath.row].country! + " Daily Stats"
-        destVC.downloadTimelineData(for: countryCode)
+        destVC.downloadTimelineData(for: countryCode!)
 
         let navController   = UINavigationController(rootViewController: destVC)
         present(navController, animated: true, completion: nil)

@@ -92,6 +92,14 @@
 			path = Labels;
 			sourceTree = "<group>";
 		};
+		953FAC56252F83C8000800ED /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9538CE0E24FA7F29007170DF /* ItemInfoVCs */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		9556E3C024FAD7DD008DD35B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,8 +156,8 @@
 			children = (
 				9556E3C024FAD7DD008DD35B /* Cells */,
 				9538CE1124FA7F8A007170DF /* Labels */,
-				9538CE0E24FA7F29007170DF /* ItemInfoVCs */,
 				95341B10252BB94200500918 /* StackViews */,
+				953FAC56252F83C8000800ED /* ViewControllers */,
 				95DC37CA24F177550098ABD9 /* OKTabBarController.swift */,
 			);
 			path = CustomViews;

@@ -20,6 +20,8 @@ class CountryListVC: UIViewController {
     let casesLbl            = OKTitleLabel(textAlignment: .right, fontSize: 20)
     let deathsLbl           = OKTitleLabel(textAlignment: .right, fontSize: 20)
     
+    var isSearching         = false
+    
     var countryData: [CountryData]          = []
     var filteredCountries: [CountryData]    = []
     
@@ -122,11 +124,25 @@ extension CountryListVC: UITableViewDelegate {
         return countryData.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let activeArray     = isSearching ? filteredCountries : countryData
+        let countryCode     = (activeArray[indexPath.row].country?.lowercased())!
+        
+        let destVC          = DailyStatsVC()
+        
+        destVC.title        = activeArray[indexPath.row].country! + " Daily Stats"
+        destVC.downloadTimelineData(for: countryCode)
+
+        let navController   = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true, completion: nil)
+    }
+    
 }
 
 extension CountryListVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        isSearching = true
         filteredCountries = countryData.filter { $0.country!.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredCountries)
     }
@@ -135,6 +151,7 @@ extension CountryListVC: UISearchResultsUpdating {
 extension CountryListVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if  searchText.count == 0 {
+            isSearching = false
             updateData(on: countryData)
         }
     }
